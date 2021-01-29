@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.alexandrerangel.art.br/hydra/ovo/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>hydra</title>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="./hydra_files/style.css">
+    
+    <!-- import the latest version of hydra synth-->
+    <script src="./hydra_files/hydra-synth"></script>
+  <script src="./hydra_files/google_analytics_auto.js"></script></head>
+  <body>
+
+    <div>
+      <canvas id="myCanvas" style="background-color: black; width: 737px; height: 100%;" width="1440" height="737"></canvas>
+    </div>
+
+    <!-- <canvas id="myCanvas"></canvas> -->
+
+    <script>
+
+      let isIOS =
+        (/iPad|iPhone|iPod/.test(navigator.platform) ||
+          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
+        !window.MSStream;
+
+      let precisionValue = isIOS ? 'highp' : 'mediump';
+
+
+      var canvas = document.getElementById("myCanvas")
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      canvas.style.width = '100%'
+      canvas.style.height = '100%'
+
+     var hydra = new Hydra({
+        canvas: document.getElementById("myCanvas"),
+        width: window.innerWidth,
+        height: window.innerHeight,
+        enableStreamCapture: false,
+        detectAudio: false,
+        precision: precisionValue
+      })
+
+      // square canvas:
+      const width = canvas.clientWidth
+      const height = canvas.clientHeight
+      if(width < height) { canvas.style.height = width+"px" }
+      else { canvas.style.width = height+"px" }
+
+      // mousedown plays audio
+      canvas.addEventListener("mousedown", ()=>loadAudio() )
+
+      // Hydra code:
+
+      function loadAudio() {
+        var num = Math.floor(Math.random()*33)
+        var audio1 = new Audio('./audio/ovo'+num+'.mp3')
+        console.log('./audio/ovo' + num + '.mp3')
+        audio1.playbackRate = (Math.random()*0.1)+0.5
+        audio1.volume = 0.333
+        audio1.play()
+      }
+      
+      loadAudio() // play audio
+      setInterval( ()=> { if(Math.random()>0.3) { loadAudio() } }, 9000) // audio set interval
+
+      speed = 1.1
+      shape(99,.15,.5).color(0,1,2)
+
+      .diff( shape(99,.5,0).scrollX(.05).rotate( ()=>time/10 ).color(1,0,.75) )
+      .diff( shape(99,.4,0).scrollX(.10).rotate( ()=>time/20 ).color(1,0,.75) )
+      .diff( shape(99,.3,0).scrollX(.15).rotate( ()=>time/30 ).color(1,0,.75) )
+      .diff( shape(99,.2,0).scrollX(.20).rotate( ()=>time/40 ).color(1,0,.75) )
+      .diff( shape(99,.1,0).scrollX(.25).rotate( ()=>time/50 ).color(1,0,.75) )
+
+      .modulateScale(
+        shape(99,.5,0).scrollX(.05).rotate( ()=>time/10 )
+        , ()=>(Math.sin(time/3)*.2)+.2 )
+
+      .scale(1.5,1,1)
+      .out()
+
+
+    </script>
+  
+
+</body></html>
